@@ -115,7 +115,7 @@ def blend_logic_def(m: Model, data: ModelData, v: ModelVars):
     cw2v_c = tupledict(
         {(d, b, c, p): m.addConstr(lhs=v.C_feed[d, b, c, p],
                                    sense=COPT.EQUAL,
-                                   rhs=v.C_feed_vol[d, b, c, p] * data.CQ[c, 'qSPG', d],
+                                   rhs=v.C_feed_vol[d, b, c, p] * data.CQ[c, 'spg', d],
                                    name='C_vol_constr({0},{1},{2},{3})'.format(d, b, c, p))
          for d in data.D for b in data.B for c in data.C for p in data.P})
 
@@ -133,7 +133,7 @@ def pump_constr_def(m: Model, data: ModelData, v: ModelVars):
     # pump_min_constr
     tupledict({(d, b, c): m.addConstr(lhs=v.C_weight[d, b, c],
                                       sense=COPT.GREATER_EQUAL,
-                                      rhs=data.C_pump_min[c] * data.CQ[c, 'qSPG', d] * (v.b_duration[d, b] - 24 * (
+                                      rhs=data.C_pump_min[c] * data.CQ[c, 'spg', d] * (v.b_duration[d, b] - 24 * (
                                               1 - v.b_C[d, b, c])),
                                       name='C_pump_min({0},{1},{2})'.format(d, b, c))
                for d in data.D for b in data.B for c in data.C})
@@ -141,14 +141,14 @@ def pump_constr_def(m: Model, data: ModelData, v: ModelVars):
     # pump_max_constr1
     tupledict({(d, b, c): m.addConstr(lhs=v.C_weight[d, b, c],
                                       sense=COPT.LESS_EQUAL,
-                                      rhs=data.C_pump_max[c] * data.CQ[c, 'qSPG', d] * v.b_duration[d, b],
+                                      rhs=data.C_pump_max[c] * data.CQ[c, 'spg', d] * v.b_duration[d, b],
                                       name='C_pump_max1({0},{1},{2})'.format(d, b, c))
                for d in data.D for b in data.B for c in data.C})
 
     # pump_max_constr2
     tupledict({(d, b, c): m.addConstr(lhs=v.C_weight[d, b, c],
                                       sense=COPT.LESS_EQUAL,
-                                      rhs=data.C_pump_max[c] * data.CQ[c, 'qSPG', d] * 24 * v.b_C[d, b, c],
+                                      rhs=data.C_pump_max[c] * data.CQ[c, 'spg', d] * 24 * v.b_C[d, b, c],
                                       name='C_pump_max2({0},{1},{2})'.format(d, b, c))
                for d in data.D for b in data.B for c in data.C})
 

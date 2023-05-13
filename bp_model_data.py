@@ -161,12 +161,12 @@ class ModelData:
         for q in self.Q:
             for d in self.D:
                 for c in self.C:
-                    self.CQ_f[c, q, d] = self.CQ[c, q, d] if q != 'qRVP' else \
+                    self.CQ_f[c, q, d] = self.CQ[c, q, d] if q != 'rvp' else \
                         self.CQ[c, q, d] ** 1.25
                 for p in self.P:
-                    self.PQ_min_f[p, q, d] = self.PQ_min[p, q, d] if q != 'qRVP' else \
+                    self.PQ_min_f[p, q, d] = self.PQ_min[p, q, d] if q != 'rvp' else \
                         self.PQ_min[p, q, d] ** 1.25
-                    self.PQ_max_f[p, q, d] = self.PQ_max[p, q, d] if q != 'qRVP' else \
+                    self.PQ_max_f[p, q, d] = self.PQ_max[p, q, d] if q != 'rvp' else \
                         self.PQ_max[p, q, d] ** 1.25
 
 
