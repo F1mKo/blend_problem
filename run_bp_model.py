@@ -289,7 +289,7 @@ if __name__ == "__main__":
     # Создаем среду COPT
     env = Envr()
 
-    # Считываем данные из GDX
+    # Считываем данные из Excel
     blend_problem_data = ModelData()
     blend_problem_data.import_data_excel(config, run_path)
 
