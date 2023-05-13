@@ -134,7 +134,6 @@ class ModelData:
         self.Q_vc = self.parameter(self.db["Q_vc"], self.Q, True)
         self.S = self.parameter(self.db["S"], list(itertools.product(self.D, self.C)), False)
 
-
     @staticmethod
     def parameter(param: pd.DataFrame, domains: list, binary=False):
         """
@@ -326,12 +325,10 @@ def add_variables(m: Model, data: ModelData, v: ModelVars):
                         name="profit")
 
 
-def gantt_diagram(model: Model, data: ModelData, v: ModelVars, result: dict):
+def gantt_diagram(data: ModelData, result: dict):
     """
     Drivers Gantt diagram plotting function. Shows the optimal driver schedule on the timeline.
-    :param model:
     :param data:
-    :param v:
     :param result:
     :return: None
     """
@@ -373,7 +370,7 @@ def gantt_diagram(model: Model, data: ModelData, v: ModelVars, result: dict):
                                      (ci + 1 - 1 / 4, 1 / 2), edgecolors='black', facecolors='white', hatch='//')
             curr_time += result['b_duration'][d, b]
 
-    plt.title("График использования компонентов".format(d))
+    plt.title("График использования компонентов")
     gnt2.set_xlim(-1, time_horizon + 1)
     gnt2.set_ylim(0, 1 * len(data.C) + 1 / 2)
     gnt2.set_xlabel('Время, час')
@@ -391,7 +388,6 @@ def get_var_values(m: Model):
     """
     Get variables from the optimal solution
     :param m: model to extract solution data
-    :param varlist:
     :return: optimal solution data
     """
     all_vars = m.getVars()
@@ -466,7 +462,7 @@ def sol2excel(result, run_path, db: dict = None, folder_name: str = None):
                 # Make the columns wider for clarity.
                 worksheet.set_column(0, max_col - 1, 20)
 
-                # Set the autofilter.
+                # Set the auto-filter.
                 worksheet.autofilter(0, 0, max_row, max_col - 1)
 
         for variable in result.keys():
@@ -480,5 +476,5 @@ def sol2excel(result, run_path, db: dict = None, folder_name: str = None):
             # Make the columns wider for clarity.
             worksheet.set_column(0, max_col - 1, 20)
 
-            # Set the autofilter.
+            # Set the auto-filter.
             worksheet.autofilter(0, 0, max_row, max_col - 1)

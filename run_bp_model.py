@@ -4,7 +4,7 @@ from bp_model_data import output_folder_check, ModelData, ModelVars, add_variabl
 
 config = {
     'project_path': 'C:/Users/F1mK0/PycharmProjects/copt_env',
-    'input_file': 'bp_diploma_case1.xlsx',
+    'input_file': 'bp_diploma_case2.xlsx',
     'Model name': 'Blend Problem',
     'time_horizon': 288
 }
@@ -312,7 +312,7 @@ if __name__ == "__main__":
     set_objective(model, blend_problem_data, variables)
 
     # Сохраняем модель в формат lp
-    # model.write(run_path + '/model.lp')
+    model.write(run_path + '/' + (folder_name if folder_name is not None else '') + '_model.lp')
 
     # Блок задания параметров модели
     # Ниже приведены не все возможные для задания, но наиболее актуальные для модели параметры
@@ -331,11 +331,6 @@ if __name__ == "__main__":
         if model.status == COPT.OPTIMAL:
             res_file.write(run_path + ':  Optimization was stopped with status %d' % model.status)
             res_file.write('\n')
-            # allvars = model.getVars()
-            # print("Variable solution:")
-            # for var in allvars:
-            #     if var.x > 10 ** (-4) or var.name[0] in 'p':
-            #         print("{0}: {1} ".format(var.name, var.x))
 
             print("Objective value: {} ".format(model.objval))
             model.write(run_path + '/' + (folder_name if folder_name is not None else '') +
@@ -345,14 +340,13 @@ if __name__ == "__main__":
             print("Writing solution to excel:")
             sol2excel(result_df, run_path, blend_problem_data.db, folder_name)
             print("Making plots to visualize schedule:")
-            gantt_diagram(model, blend_problem_data, variables, result_dict)
+            gantt_diagram(blend_problem_data, result_dict)
             print("Done!")
 
         elif model.status == COPT.TIMEOUT:
             res_file.write(run_path + ':  Optimization was stopped with status %d' % model.status)
             res_file.write('\n')
         elif model.status != COPT.INFEASIBLE:
-            # print(config['scenario_number']+':  Optimization was stopped with status %d' % m.status)
             res_file.write(run_path + ':  Optimization was stopped with status %d' % model.status)
             res_file.write('\n')
         else:
