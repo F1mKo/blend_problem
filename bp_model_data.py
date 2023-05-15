@@ -51,7 +51,7 @@ class ModelData:
         # Sets
         self.C = None  # component
         self.D = None  # day
-        self.H = None
+        self.H = None  # time horizon
         self.N = None  # time interval
         self.P = None  # product
         self.Q = None  # quality
@@ -60,17 +60,17 @@ class ModelData:
         self.CQ = None  # component quality
         self.C_cost = None  # component cost
         self.C_init = None  # component init stock
-        self.C_pump_max = None
-        self.C_pump_min = None
+        self.C_pump_max = None  # maximum component involvement velocity
+        self.C_pump_min = None  # minimum component involvement velocity
         self.C_stock_max = None  # component max stock
         self.map_PC = None  # component to product map
         self.ND = None  # day to time interval
         self.PD_plan = None  # product day plan
-        self.PN_max = None  # product time interval max plan
-        self.PN_min = None  # product time interval min plan
-        self.PQ_max = None  # product quality max specification
-        self.PQ_min = None  # product quality min specification
-        self.P_blend_min = None  # product minimum blend weight
+        self.PN_max = None  # maximum product time interval plan
+        self.PN_min = None  # minimum product time interval plan
+        self.PQ_max = None  # maximum product quality specification
+        self.PQ_min = None  # minimum product quality specification
+        self.P_blend_min = None  # minimum product blend weight
         self.P_cost = None  # product cost
         self.P_prepare_time = None  # product quality checking time
 
