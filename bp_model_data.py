@@ -5,7 +5,9 @@ from coptpy import *
 import matplotlib.pyplot as plt
 
 plt.rcParams["font.family"] = "Times New Roman"
-plt.rcParams.update({'font.size': 14,
+plt.rc('pdf',fonttype = 42)
+plt.rc('ps',fonttype = 42)
+plt.rcParams.update({'font.size': 24,
                      'font.family': 'Times New Roman',
                      'mathtext.fontset': 'cm'})
 
@@ -334,7 +336,8 @@ def gantt_diagram(data: ModelData, result: dict):
     """
 
     time_horizon = data.H
-    fig1, gnt1 = plt.subplots(figsize=(15, 3))
+    shrinkage = 0.5
+    fig1, (gnt1, gnt2) = plt.subplots(2, 1, figsize=(15, 6), gridspec_kw={'height_ratios': [1, 2]})
     # gnt1.grid(True)
     curr_time = 0
     for d in data.D:
@@ -342,23 +345,19 @@ def gantt_diagram(data: ModelData, result: dict):
             for pi, p in enumerate(data.P):
                 if result['b_P'][d, b, p] > 0.5:
                     gnt1.broken_barh([(curr_time, result['b_duration'][d, b])],
-                                     (pi + 1 - 1 / 8, 1 / 4), edgecolors='black', facecolors='white', hatch='////')
+                                     ((pi + 1 - 1 / 8) * shrinkage, 1 / 4), edgecolors='black', facecolors='white', hatch='////')
             curr_time += result['b_duration'][d, b]
 
-    plt.title("График приготовления продуктов")
+    # plt.title("График приготовления продуктов")
     gnt1.set_xlim(-1, time_horizon + 1)
-    gnt1.set_ylim(0, 1 * len(data.P) + 1 / 2)
+    gnt1.set_ylim(0, shrinkage * len(data.P) + 1 / 3)
     gnt1.set_xlabel('Время, час')
     gnt1.set_ylabel('Продукт ' + r'$P$')
     gnt1.set_xticks(range(0, time_horizon + 1, 24))
-    gnt1.set_yticks([i * 1 for i in range(1, len(data.P) + 1)])
+    gnt1.set_yticks([i * shrinkage for i in range(1, len(data.P) + 1)])
     gnt1.set_xticklabels(range(0, time_horizon + 1, 24))
     gnt1.set_yticklabels(data.P)
-    plt.tight_layout()
-    plt.savefig(data.result_path + "/pictures/product_gannt.pdf", format="pdf")
-    plt.show()
 
-    fig2, gnt2 = plt.subplots(figsize=(15, 3))
     # gnt2.grid(True)
     curr_time = 0
     for d in data.D:
@@ -370,7 +369,7 @@ def gantt_diagram(data: ModelData, result: dict):
                                      (ci + 1 - 1 / 4, 1 / 2), edgecolors='black', facecolors='white', hatch='//')
             curr_time += result['b_duration'][d, b]
 
-    plt.title("График использования компонентов")
+    # plt.title("График использования компонентов")
     gnt2.set_xlim(-1, time_horizon + 1)
     gnt2.set_ylim(0, 1 * len(data.C) + 1 / 2)
     gnt2.set_xlabel('Время, час')
@@ -379,8 +378,9 @@ def gantt_diagram(data: ModelData, result: dict):
     gnt2.set_yticks([i * 1 for i in range(1, len(data.C) + 1)])
     gnt2.set_xticklabels(range(0, time_horizon + 1, 24))
     gnt2.set_yticklabels(data.C)
+
     plt.tight_layout()
-    plt.savefig(data.result_path + "/pictures/component_gannt.pdf", format="pdf")
+    plt.savefig(data.result_path + "/pictures/result_gannt.pdf", format="pdf")
     plt.show()
 
 
